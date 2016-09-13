@@ -22,7 +22,7 @@ var game = cc.Layer.extend({
     //  var backgroundLayer = cc.LayerGradient.create(cc.color(0,0,0,255), cc.color(0x46,0x82,0xB4,255));
 
     //森の背景
-    var background = new cc.Sprite(res.background_png);
+    var background = new cc.Sprite(res.gb_png);
     var size = cc.director.getWinSize();
     background.setPosition(cc.p(size.width / 2.0, size.height / 2.0));
     var backgroundLayer = cc.Layer.create();
@@ -38,7 +38,7 @@ var game = cc.Layer.extend({
     this.addChild(topLayer);
     cart = cc.Sprite.create(res.cat_png);
     topLayer.addChild(cart, 0);
-    cart.setPosition(240, 24);
+    cart.setPosition(240, 60);
     this.schedule(this.addItem, 1);
     //タッチイベントのリスナー追加
     cc.eventManager.addListener(touchListener, this);
@@ -75,10 +75,10 @@ var Item = cc.Sprite.extend({
     this._super();
     //ランダムに爆弾と果物を生成する
     if (Math.random() < 0.5) {
-      this.initWithFile(res.bomb_png);
+      this.initWithFile(res.bug_png);
       this.isBomb = true;
     } else {
-      this.initWithFile(res.strawberry_png);
+      this.initWithFile(res.apple_png);
       this.isBomb = false;
     }
   },
