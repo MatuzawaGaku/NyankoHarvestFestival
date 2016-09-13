@@ -8,6 +8,7 @@ var res = {
   gb_png : "res/game_bg.png",
   title_png : "res/title_bg.png",
   start_png : "res/title_E.png",
+  help_png : "res/dog.png",
 //  leftbutton_png: "res/leftbutton.png",
 //  rightbutton_png: "res/rightbutton.png",
 //  background_png: "res/background.png",

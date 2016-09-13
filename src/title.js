@@ -11,6 +11,13 @@ var titleLayer = cc.Layer.extend({
     start_png.setPosition(size.width * 3/ 6, size.height / 5);
     this.addChild(start_png);
 
+
+      var help_png = cc.Sprite.create(res.help_png);
+      help_png.setPosition(size.width*1/6, size.height/1.5);
+      this.addChild(help_png);
+      var label = cc.LabelTTF.create("ヘルプだワン!!", "Arial", 40);
+         label.setPosition(size.width / 2, size.height * 4 / 5);
+         this.addChild(label, 4);
     // タップイベントリスナーを登録する
      cc.eventManager.addListener({
          event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -25,10 +32,6 @@ var titleLayer = cc.Layer.extend({
 
  onTouchBegan: function(touch, event) {
      return true;
- },
- onTouchMoved: function(touch, event) {},
- onTouchEnded: function(touch, event) {
-     // 次のシーンに切り替える
      cc.director.runScene(new gameScene());
  },
 });
@@ -39,4 +42,4 @@ var titleScene = cc.Scene.extend({
     var layer = new titleLayer();
     this.addChild(layer);
   }
-})
+});
