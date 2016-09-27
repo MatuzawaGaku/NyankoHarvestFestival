@@ -1,45 +1,55 @@
-//titleScene.js
 var titleLayer = cc.Layer.extend({
   ctor : function(){
     this._super();
     var size = cc.director.getWinSize();
-    var title_png = cc.Sprite.create(res.title_png);
-    title_png.setPosition(size.width/2, size.height/2);
-    this.addChild(title_png);
 
-    var start_png = cc.Sprite.create(res.start_png);
-    start_png.setPosition(size.width * 3/ 6, size.height / 5);
-    this.addChild(start_png);
+    var title = cc.Sprite.create(res.title_png);
+    title.setPosition(size.width/2, size.height/2);
+    title.setScale(1,1);
+    this.addChild(title);
+    for(i = 0; i < 2; i++){
+      var rp = new mode();
+      rp.pictureValue = i;
+      rp.setPosition(220, 60*(i + 1));
+      rp.setScale(1,1);
+      this.addChild(rp);
+    }
+  }
+});
 
+var mode = cc.Sprite.extend({
+  ctor : function(){
+    this._super();
+    if(i == 0)this.initWithFile(res.start_png);
+    if(i == 1)this.initWithFile(res.help_png);
+    cc.eventManager.addListener(lis,this);
+  },
+});
 
-      var help_png = cc.Sprite.create(res.help_png);
-      help_png.setPosition(size.width*1/6, size.height/1.5);
-      this.addChild(help_png);
-      var label = cc.LabelTTF.create("ヘルプだワン!!", "Arial", 40);
-         label.setPosition(size.width / 2, size.height * 4 / 5);
-         this.addChild(label, 4);
-    // タップイベントリスナーを登録する
-     cc.eventManager.addListener({
-         event: cc.EventListener.TOUCH_ONE_BY_ONE,
-         swallowTouches: true,
-         onTouchBegan: this.onTouchBegan,
-         onTouchMoved: this.onTouchMoved,
-         onTouchEnded: this.onTouchEnded
-     }, this);
-
-     return true;
- },
-
- onTouchBegan: function(touch, event) {
-     return true;
-     cc.director.runScene(new gameScene());
- },
+//押されたときの処理
+var lis = cc.EventListener.create({
+  event : cc.EventListener.TOUCH_ONE_BY_ONE,
+  swallowTouches: true,
+  onTouchBegan: function(touch, event){
+  var target = event.getCurrentTarget();
+  var location = target.convertToNodeSpace(touch.getLocation());
+  var targetSize = target.getContentSize();
+  var targetRectangle = cc.rect(0,0,targetSize.width, targetSize.height);
+  if(cc.rectContainsPoint(targetRectangle,location)){
+    if(target.pictureValue == 0){
+      cc.director.runScene(new gameScene());
+    }
+    if(target.pictureValue == 1){
+      cc.director.runScene(new helpScene());
+    }
+}
+}
 });
 
 var titleScene = cc.Scene.extend({
-  onEnter: function(){
+  onEnter : function() {
     this._super();
-    var layer = new titleLayer();
-    this.addChild(layer);
+    var titlelayer = new titleLayer();
+    this.addChild(titlelayer);
   }
 });
