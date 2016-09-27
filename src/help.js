@@ -1,4 +1,4 @@
-var helpScene = cc.Scene.extend({
+var helpLayer = cc.Layer.extend({
   ctor : function(){
     this._super();
     var size = cc.director.getWinSize();
@@ -28,7 +28,7 @@ var helpScene = cc.Scene.extend({
 var helpScene = cc.Scene.extend({
   onEnter : function(){
     this._super();
-    var helplayer = new helpLayer();
-    this.addChild(helplayer);
+    var layer = new helpLayer();
+    this.addChild(layer);
   },
 });
