@@ -2,8 +2,9 @@ var itemsLayer;
 var cat;
 var basket;
 var xSpeed = 0; //カートの移動速度
+
 var time = 60;
-var time_label;
+var timecount;
 
 var detectedX;　 //現在タッチしているX座標
 var savedX;　 //前回タッチしていたX座標
@@ -61,21 +62,19 @@ var game = cc.Layer.extend({
 
     this.schedule(this.addItem, 1);
 
+
     //タッチイベントのリスナー追加
     cc.eventManager.addListener(touchListener, this);
     //カートの移動のため　Update関数を1/60秒ごと実行させる　
     this.scheduleUpdate();
-    // タイマー表示用
-    var timer_img = new cc.Sprite(res.timerleft_png);
-    timer_img.setPosition(cc.p(size.width * 0.1, size.height * 0.9));
-    var timerlayer = cc.Layer.create();
-    timerlayer.addChild(timer_img, 0);
-    this.addChild(timerlayer);
 
-    time_label = new cc.LabelTTF(time, "Arial", 25);
-    time_label.setPosition(cc.p(size.width * 0.11, size.height * 0.89));
-    time_label.fillStyle = "black";
-    this.addChild(time_label);
+
+    // タイマー表示用
+
+    timecount = new cc.LabelTTF(time, "Arial", 40);
+    timecount.setPosition(cc.p(size.width * 0.11, size.height * 0.89));
+    timecount.fillStyle = "black";
+    this.addChild(timecount);
 
   },
   addItem: function() {
@@ -90,10 +89,11 @@ var game = cc.Layer.extend({
   if (time < 0) {
     time = 0;
   }
-  time_label.setString(time);
+  timecount.setString(""+time);
 },
   //カートの移動のため　Update関数を1/60秒ごと実行させる関数
   update: function(dt) {
+    this.schedule(this.timer_count,1);
     if (touching) {
       //現在タッチしているX座標と前回の座標の差分をとる
       var deltaX = savedX - detectedX;
