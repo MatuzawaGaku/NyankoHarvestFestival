@@ -1,8 +1,14 @@
 var itemsLayer;
 var cat;
 var basket;
+var direction = 1;
 var xSpeed = 0; //カートの移動速度
-
+var score1 = 0;
+var score2 = 0;
+var score3 = 0;
+var scorecount1;
+var scorecount2;
+var scorecount3;
 var time = 60;
 var timecount;
 
@@ -68,9 +74,29 @@ var game = cc.Layer.extend({
     //カートの移動のため　Update関数を1/60秒ごと実行させる　
     this.scheduleUpdate();
 
+    //SCORE表示
+    var score_counter = new cc.Sprite.create(res.gamecount_png);
+    score_counter.setPosition(cc.p(size.width*0.865,size.height*0.076));
+    var scorelayer = cc.Layer.create();
+    scorelayer.addChild(score_counter,0);
+    this.addChild(scorelayer);
 
-    // タイマー表示用
+    scorecount1 = new cc.LabelTTF("0", "Arial", 25);
+    scorecount1.setPosition(cc.p(size.width*0.965,size.height*0.055));
+    scorecount1.fillStyle = "black";
+    this.addChild(scorecount1);
 
+    scorecount2 = new cc.LabelTTF("0", "Arial", 25);
+    scorecount2.setPosition(cc.p(size.width*0.9,size.height*0.055));
+    scorecount2.fillStyle = "black";
+    this.addChild(scorecount2);
+
+    scorecount3 = new cc.LabelTTF("0", "Arial", 25);
+    scorecount3.setPosition(cc.p(size.width*0.838, size.height*0.055));
+    scorecount3.fillStyle = "black";
+    this.addChild(scorecount3);
+
+    // タイマー表示
     timecount = new cc.LabelTTF(time, "Arial", 40);
     timecount.setPosition(cc.p(size.width * 0.11, size.height * 0.89));
     timecount.fillStyle = "black";
@@ -156,25 +182,84 @@ var Item = cc.Sprite.extend({
     this.scheduleUpdate();
   },
   update: function(dt) {
-    //果物の処理　座標をチェックしてカートの接近したら
-    if (this.getPosition().y < 35 && this.getPosition().y > 30 &&
-      Math.abs(this.getPosition().x - cat.getPosition().x) < 10 && !this.isbug) {
-      gameLayer.removeItem(this);
-      console.log("FRUIT");
+    //果物の処理
+if(direction == 1 && (this.getPosition().y < 65 && this.getPosition().y > 60 &&Math.abs(this.getPosition().x - (cat.getPosition().x + 30)) < 30 && !this.isBomb)) {
+  gameLayer.removeItem(this);
+  score1++;
+  if(score1 > 9) {
+    score2++;
+    if(score2 > 9){
+      score3++;
+      score2 = 0;
+      scorecount3.setString(score3);
     }
-    //虫の処理　座標をチェックしてカートの接近したら　フルーツより虫に当たりやすくしている
-    if (this.getPosition().y < 35 && Math.abs(this.getPosition().x - cat.getPosition().x) < 25 &&
-      this.isbug) {
-      gameLayer.removeItem(this);
-      console.log("bug");
-    }
-    //地面に落ちたアイテムは消去
-    if (this.getPosition().y < -30) {
-      gameLayer.removeItem(this)
+    score1 = 0;
+    scorecount2.setString(score2);
+  }
+  scorecount1.setString(score1);
+  console.log("FRUIT");
+}
+
+ if (direction == 0 && (this.getPosition().y < 65 && this.getPosition().y > 60 &&Math.abs(this.getPosition().x - (cat.getPosition().x - 30)) < 30  && !this.isBomb)) {
+   gameLayer.removeItem(this);
+   score1++;
+   if(score1 > 9) {
+     score2++;
+     if(score2 > 9){
+       score3++;
+       score2 = 0;
+       scorecount3.setString(score3);
+     }
+     score1 = 0;
+     scorecount2.setString(score2);
+   }
+   scorecount1.setString(score1);
+   console.log("FRUIT");
+ }
+
+//虫の処理
+if(direction == 1 &&(this.getPosition().y < 60 &&Math.abs(this.getPosition().x - (cat.getPosition().x + 30)) < 25 && this.isBomb)) {
+  gameLayer.removeItem(this);
+  score1--;
+  if(score2 < 0){
+    if(score3 >= 1) {
+      score3--;
+      score2 = 9;
+      scorecount3.setString(score3);
+    }else{
+      score2 = 0;
+      score1 = 0;
+      scorecount1.setString(score1);
     }
   }
-});
+  scorecount2.setString(score2);
+  console.log("BUG");
+}
 
+if (direction == 0 &&(this.getPosition().y < 60 &&Math.abs(this.getPosition().x - (cat.getPosition().x - 30)) < 25 && this.isBomb)){
+  gameLayer.removeItem(this);
+  score1--;
+  if(score2 < 0){
+    if(score3 >= 1){
+      score3--;
+      score2 = 9;
+      scorecount3.setString(score3);
+    }else{
+      score2 = 0;
+      score1 = 0;
+      scorecount1.setString(score1);
+    }
+  }
+  scorecount2.setString(score2);
+  console.log("BUG");
+}
+
+//地面に落ちたアイテムを消す
+  if(this.getPosition().y < -30){
+    gameLayer.removeItem(this);
+  }
+}
+});
 //バーチャルアナログパッド用のタッチリスナーの実装
 var touchListener = cc.EventListener.create({
   event: cc.EventListener.TOUCH_ONE_BY_ONE,

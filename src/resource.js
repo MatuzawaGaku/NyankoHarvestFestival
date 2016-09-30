@@ -9,6 +9,7 @@ var res = {
   cat_2png : "res/cat2.png",
   apple_png : "res/apple.png",
   gb_png : "res/game_bg.png",
+  gamecount_png : "res/game_counter.png",
   title_png : "res/title_bg.png",
   start_png : "res/title_E.png",
   help_png : "res/dog.png",
