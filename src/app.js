@@ -114,6 +114,7 @@ var game = cc.Layer.extend({
   time--;
   if (time < 0) {
     time = 0;
+    cc.director.runScene(new titleScene());
   }
   timecount.setString(""+time);
 },
@@ -220,7 +221,7 @@ if(direction == 1 && (this.getPosition().y < 65 && this.getPosition().y > 60 &&M
 //虫の処理
 if(direction == 1 &&(this.getPosition().y < 60 &&Math.abs(this.getPosition().x - (cat.getPosition().x + 30)) < 25 && this.isBomb)) {
   gameLayer.removeItem(this);
-  score1--;
+  score2--;
   if(score2 < 0){
     if(score3 >= 1) {
       score3--;
@@ -238,7 +239,7 @@ if(direction == 1 &&(this.getPosition().y < 60 &&Math.abs(this.getPosition().x -
 
 if (direction == 0 &&(this.getPosition().y < 60 &&Math.abs(this.getPosition().x - (cat.getPosition().x - 30)) < 25 && this.isBomb)){
   gameLayer.removeItem(this);
-  score1--;
+  score2--;
   if(score2 < 0){
     if(score3 >= 1){
       score3--;
